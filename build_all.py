@@ -117,10 +117,10 @@ def main() -> int:
         command.prepend_argument('USER_NAME=holykeebs')
         commands.append(command)
 
-    os.makedirs('build_all', exist_ok=True)
-    commands_file = open('build_all/commands.txt', 'w')
+    os.makedirs('uf2', exist_ok=True)
+    commands_file = open('uf2/commands.txt', 'w')
     for command in commands:
-        if os.path.exists(f'build_all/{command.file_name()}.uf2'):
+        if os.path.exists(f'uf2/{command.file_name()}.uf2'):
             print(f'Skipping {command.file_name()} (already built)')
             continue
 
@@ -128,8 +128,8 @@ def main() -> int:
         command.prepend_argument(f'TARGET={command.file_name()}')
         print(f'Making {command.file_name()}: {command.build()}')
         run_command_check_output(command.build().split())
-        # move the file to build_all
-        os.rename(f'{command.file_name()}.uf2', f'build_all/{command.file_name()}.uf2')
+        # move the file to uf2/
+        os.rename(f'{command.file_name()}.uf2', f'uf2/{command.file_name()}.uf2')
         commands_file.write(f'{command.file_name()}: {command.build()}\n')
     return 0
 
